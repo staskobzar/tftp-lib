@@ -1,7 +1,7 @@
 require "tftp/lib/version"
+require "tftp/lib/packet"
 
-module Tftp
+module TFTP
   module Lib
-    # Your code goes here...
   end
 end

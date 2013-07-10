@@ -1,4 +1,7 @@
 # TFTP::Lib
+[![Build Status](https://travis-ci.org/staskobzar/tftp-lib.png?branch=master)](https://travis-ci.org/staskobzar/tftp-lib)
+[![Coverage Status](https://coveralls.io/repos/staskobzar/tftp-lib/badge.png?branch=master)](https://coveralls.io/r/staskobzar/tftp-lib?branch=master)
+[![Code Climate](https://codeclimate.com/github/staskobzar/tftp-lib.png)](https://codeclimate.com/github/staskobzar/tftp-lib)
 
 Trivial File Transfer Protocol (RFC 1350) ruby implementation
 > Under construction. Not finished

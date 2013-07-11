@@ -7,8 +7,8 @@ module TFTP
         it "initiates default mode as netascii" do
           subject.mode.should eq("netascii")
         end
-        it "initiates block number to zero" do
-          subject.block.should be(0)
+        it "initiates block number to 1" do
+          subject.block.should be(1)
         end
       end
     end

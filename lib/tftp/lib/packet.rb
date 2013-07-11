@@ -35,7 +35,7 @@ module TFTP
       TFTPHDR = {
         RRQ     => "nZ*Z*",
         WRQ     => "nZ*Z*",
-        DATA    => "nnA*",
+        DATA    => "nnZ*",
         ACK     => "n*",
         ERROR   => "nnZ*"
       }
@@ -51,7 +51,7 @@ module TFTP
       # setup TFTP Packet
       def initialize
         @mode = "netascii"
-        @block = 0
+        @block = 1
       end
 
     end

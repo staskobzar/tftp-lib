@@ -1,3 +1,4 @@
+require 'tftp/lib/packet'
 module TFTP
   module Lib
 

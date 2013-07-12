@@ -6,81 +6,54 @@ module TFTP
       # TFTP opcode
       attr_reader :opcode
 
-      # File name
-      attr_reader :file
-
-      # transfer mode
-      attr_reader :mode
-
-      # data field
-      attr_reader :data
-
-      # error code
-      attr_reader :errcode
-
-      # error message
-      attr_reader :errmsg
-
       # read and parse TFTP packet
       def initialize(packet)
-        parse packet
+        self.opcode = packet.unpack("n").first
+        struct = TFTPHDR[opcode]
+        raise IllegalTFTPop unless struct
+        self.packet = packet.unpack(struct)
+      end
+
+      # filename for RRQ and WRQ packets
+      def file
+        packet[1] if [RRQ, WRQ].include? opcode
+      end
+
+      # transfer mode for RRQ and WRQ packets
+      def mode
+        packet[2] if [RRQ, WRQ].include? opcode
+      end
+
+      # packet block number. Used by ACK and DATA packets
+      def block
+        packet[1] if [DATA, ACK].include? opcode
+      end
+
+      # data transfered by DATA packet
+      def data
+        packet[2] if [DATA, ACK].include? opcode
+      end
+
+      # error code
+      def errcode
+        packet[1] if opcode.eql? ERROR
+      end
+
+      # error message
+      def errmsg
+        packet[2] if opcode.eql? ERROR
       end
 
       private
-        def parse(packet)
-          self.packet = packet
-          read_opcode
-          read_packet
-        end
-
-        def read_opcode
-          self.opcode = packet.unpack("n").first
-          raise IllegalTFTPop unless TFTPHDR[opcode]
-        end
-
-        def read_packet
-          data = packet.unpack(TFTPHDR[opcode])
-          if [RRQ, WRQ].include? opcode
-            self.file = data[1]
-            self.mode = data[2]
-          elsif [DATA, ACK].include? opcode
-            self.block = data[1]
-            self.data  = data[2] if opcode.eql? DATA
-          elsif opcode.eql? ERROR
-            self.errcode = data[1]
-            self.errmsg  = data[2]
-          end
-        end
-
-        def file=(file)
-          @file = file
-        end
-
-        def mode=(mode)
-          @mode = mode
-        end
-
-        def data=(data)
-          @data = data
-        end
-
-        def errcode=(code)
-          @errcode = code
-        end
-
-        def errmsg=(msg)
-          @errmsg = msg
-        end
-
-        def packet
+        def packet #:nodoc:
           @packet
         end
 
-        def packet=(packet)
+        def packet=(packet) #:nodoc:
           @packet = packet
         end
 
-        def opcode=(opcode)
+        def opcode=(opcode) #:nodoc:
           @opcode = opcode
         end
     end
